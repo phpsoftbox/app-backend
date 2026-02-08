@@ -1,0 +1,43 @@
+{
+    "name": "phpsoftbox/app-backend",
+    "description": "Backend application skeleton for PhpSoftBox",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "phpsoftbox/application": "dev-master",
+        "phpsoftbox/router": "dev-master",
+        "phpsoftbox/http-message": "dev-master",
+        "phpsoftbox/http-emitter": "dev-master",
+        "phpsoftbox/cache": "dev-master",
+        "phpsoftbox/cookie": "dev-master",
+        "phpsoftbox/cli-app": "dev-master",
+        "phpsoftbox/database": "dev-master",
+        "phpsoftbox/orm": "dev-master",
+        "phpsoftbox/env": "dev-master",
+        "phpsoftbox/encryptor": "dev-master",
+        "phpsoftbox/config": "dev-master",
+        "phpsoftbox/inflector": "dev-master",
+        "phpsoftbox/session": "dev-master",
+        "phpsoftbox/auth": "dev-master",
+        "phpsoftbox/inertia": "dev-master",
+        "phpsoftbox/request": "dev-master",
+        "phpsoftbox/validator": "dev-master",
+        "phpsoftbox/vite": "dev-master",
+        "php-di/php-di": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ]
+    }
+}

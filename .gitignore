@@ -1,0 +1,12 @@
+/vendor/
+/node_modules/
+/.env
+/storage/
+/cache/
+/bootstrap/cache/
+/public/build/
+/public/hot
+/.phpunit.result.cache
+.idea/
+yarn.lock
+composer.lock
