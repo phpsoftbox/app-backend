@@ -1,0 +1,16 @@
+/vendor/
+/node_modules/
+/config/env/.env
+/storage/
+/cache/
+/local/*
+!/local/.gitkeep
+/bootstrap/cache/
+/public/build/
+/public/hot
+/.phpunit.result.cache
+/.php-cs-fixer.cache
+.idea/
+yarn.lock
+composer.lock
+phpunit.xml
