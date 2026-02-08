@@ -1,0 +1,77 @@
+html {
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  background: var(--color-body-bg);
+  color: var(--color-text);
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-7);
+  box-sizing: border-box;
+}
+
+.home-card {
+  max-width: 960px;
+  width: 100%;
+}
+
+.admin-shell {
+  place-items: start stretch;
+}
+
+.admin-card {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.logo-frame {
+  display: inline-grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--surface-tile);
+  box-shadow: var(--shadow-soft);
+}
+
+.logo {
+  width: 88px;
+  height: auto;
+}
+
+.intro-copy {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.intro-copy h1,
+.intro-copy p {
+  margin: 0;
+}
+
+.intro-copy p {
+  max-width: 640px;
+}
+
+@media (max-width: 680px) {
+  .shell {
+    place-items: start stretch;
+    padding: var(--spacing-5);
+  }
+
+  .logo-frame {
+    width: 96px;
+    height: 96px;
+  }
+
+  .logo {
+    width: 64px;
+  }
+}
