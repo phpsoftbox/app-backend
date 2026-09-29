@@ -6,6 +6,7 @@ use PhpSoftBox\Application\Application;
 use PhpSoftBox\Application\Middleware\BodyParserMiddleware;
 use PhpSoftBox\Application\Middleware\CorsMiddleware;
 use PhpSoftBox\Application\Middleware\MethodOverrideMiddleware;
+use PhpSoftBox\Application\Middleware\TrustedProxyMiddleware;
 use PhpSoftBox\Auth\Middleware\AuthMiddleware;
 use PhpSoftBox\Auth\Remember\RememberRestoreMiddleware;
 use PhpSoftBox\Cookie\CookieMiddleware;
@@ -33,6 +34,8 @@ return static function (Application $app): void {
         BodyParserMiddleware::class,
     ]);
 
+    // Первым: IP клиента, схема и host от доверенных прокси нужны всем остальным.
+    $app->add(TrustedProxyMiddleware::class, 1000);
     $app->add(ProfilerMiddleware::class, 110);
     $app->add(MethodOverrideMiddleware::class);
     $app->add(BodyParserMiddleware::class);
