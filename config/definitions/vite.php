@@ -25,6 +25,8 @@ return [
         $ssrTimeout = is_numeric($config['ssr_timeout'] ?? null) ? (float) $config['ssr_timeout'] : 2.0;
 
         $env = $container->get(ApplicationEnvironment::class)->value();
+        // Dev-сервер Vite — только явно (vite.dev) или в окружении dev; в prod/demo/test — собранный manifest.
+        $dev = is_bool($config['dev'] ?? null) ? $config['dev'] : $env === 'dev';
 
         return new Vite(
             manifestPath: $path->createPath($manifest),
@@ -35,6 +37,7 @@ return [
             ssrUrl: $ssrUrl,
             ssrEntry: $ssrEntry,
             ssrTimeout: $ssrTimeout,
+            dev: $dev,
         );
     }),
 ];

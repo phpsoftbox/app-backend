@@ -80,7 +80,7 @@ SSR для Inertia выключен по умолчанию. Включайте 
   Для ротации и каналов замените `LoggerInterface` в `config/definitions/http.php` на полноценный логгер.
 - Долгоживущий процесс (воркер очереди, RoadRunner/Swoole): после каждой задачи или запроса вызывайте
   `$container->get(ServicesResetter::class)->reset()` — сбрасывает warmup БД, identity map ORM, кеш прав и очередь
-  cookie (`config/definitions/runtime.php`). Для воркера `phpsoftbox/queue` — параметр `resetState` у `Worker`.
+  cookie, состояние Inertia (share, хлебные крошки, meta, вкладки) (`config/definitions/runtime.php`). Для воркера `phpsoftbox/queue` — параметр `resetState` у `Worker`.
 - Эндпоинты профайлера (`PROFILER_ENDPOINT`, по умолчанию `/__profiler/api/traces`) регистрируются только в `dev`
   при `PROFILER_ENABLED=1`: они отдают трассы запросов без авторизации.
 

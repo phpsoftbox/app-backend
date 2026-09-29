@@ -7,6 +7,10 @@ use PhpSoftBox\Container\Container;
 use PhpSoftBox\Container\Reset\ServicesResetter;
 use PhpSoftBox\Cookie\CookieQueue;
 use PhpSoftBox\Database\Connection\ConnectionManagerInterface;
+use PhpSoftBox\Inertia\Inertia;
+use PhpSoftBox\Inertia\Page\Breadcrumbs;
+use PhpSoftBox\Inertia\Page\PageMeta;
+use PhpSoftBox\Inertia\Page\Tabs;
 use PhpSoftBox\Orm\Contracts\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
@@ -23,6 +27,10 @@ return [
             EntityManagerInterface::class     => 'clear',
             PermissionCheckerInterface::class => 'reset',
             CookieQueue::class                => 'flush',
+            Inertia::class                    => 'reset',
+            Breadcrumbs::class                => 'clear',
+            PageMeta::class                   => 'clear',
+            Tabs::class                       => 'clear',
         ],
     )),
 ];
