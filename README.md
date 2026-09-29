@@ -78,6 +78,9 @@ SSR для Inertia выключен по умолчанию. Включайте 
 - За балансировщиком задайте `APP_TRUSTED_PROXIES` — иначе IP клиента и схема будут адресом и схемой балансировщика.
 - Необработанные исключения пишутся в `local/logs/app.log` (`App\Runtime\FileLogger`, по строке JSON на запись).
   Для ротации и каналов замените `LoggerInterface` в `config/definitions/http.php` на полноценный логгер.
+- Долгоживущий процесс (воркер очереди, RoadRunner/Swoole): после каждой задачи или запроса вызывайте
+  `$container->get(ServicesResetter::class)->reset()` — сбрасывает warmup БД, identity map ORM, кеш прав и очередь
+  cookie (`config/definitions/runtime.php`). Для воркера `phpsoftbox/queue` — параметр `resetState` у `Worker`.
 - Эндпоинты профайлера (`PROFILER_ENDPOINT`, по умолчанию `/__profiler/api/traces`) регистрируются только в `dev`
   при `PROFILER_ENABLED=1`: они отдают трассы запросов без авторизации.
 
