@@ -65,6 +65,9 @@ php psb db:migrate:publish --package=phpsoftbox/session
 SSR для Inertia выключен по умолчанию. Включайте его явно через `INERTIA_SSR=1`
 и настройку `VITE_SSR_URL`, когда SSR server реально запущен.
 
+Теги dev-сервера Vite выводятся только в окружении `dev` (или при `vite.dev = true` в конфиге); в остальных
+окружениях нужен собранный `public/build/manifest.json` (`yarn build`).
+
 ## Продакшен
 
 - `APP_ENV=prod`: DI-контейнер компилируется в `local/cache/di`. При деплое после `composer install` сбросьте его до
