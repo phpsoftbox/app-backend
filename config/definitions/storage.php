@@ -25,9 +25,9 @@ return [
             $driver = $disk['driver'] ?? 'local';
             $root   = $disk['rootPath'] ?? $disk['root'] ?? null;
             if (is_string($root) && $root !== '') {
-                $disk['rootPath'] = $path->createPath($root);
+                $disk['rootPath'] = $path->ensureDirectory($path->createPath($root));
             } elseif (!is_string($driver) || $driver === '' || $driver === 'local') {
-                $disk['rootPath'] = $path->storagePath();
+                $disk['rootPath'] = $path->ensureDirectory($path->storagePath());
             }
 
             $disks[$name] = $disk;

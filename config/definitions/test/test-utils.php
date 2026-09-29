@@ -29,7 +29,7 @@ return [
             databaseConfig: $database,
             connectionNames: $connections === [] ? ['default'] : $connections,
             testSuffix: is_string($testing['suffix'] ?? null) ? (string) $testing['suffix'] : '_autotests',
-            dumpDirectory: $path->cachePath('test-dumps'),
+            dumpDirectory: $path->ensureDirectory($path->cachePath('test-dumps')),
             keepDumpFiles: (bool) ($testing['keep_dumps'] ?? false),
             mode: is_string($testing['mode'] ?? null) ? (string) $testing['mode'] : 'dump',
         );

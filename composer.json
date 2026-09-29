@@ -10,8 +10,8 @@
         "phpsoftbox/cache": "dev-master",
         "phpsoftbox/cli-app": "dev-master",
         "phpsoftbox/collection": "dev-master",
-        "phpsoftbox/container": "dev-master",
         "phpsoftbox/config": "dev-master",
+        "phpsoftbox/container": "dev-master",
         "phpsoftbox/cookie": "dev-master",
         "phpsoftbox/database": "dev-master",
         "phpsoftbox/encryptor": "dev-master",
@@ -28,7 +28,8 @@
         "phpsoftbox/session": "dev-master",
         "phpsoftbox/storage": "dev-master",
         "phpsoftbox/validator": "dev-master",
-        "phpsoftbox/vite": "dev-master"
+        "phpsoftbox/vite": "dev-master",
+        "psr/log": "^3.0"
     },
     "require-dev": {
         "phpsoftbox/cs-fixer": "^1.2.1",
@@ -65,7 +66,9 @@
         ],
         "post-create-project-cmd": [
             "@app:prepare-env",
+            "@app:generate-key",
             "@app:prepare-local"
-        ]
+        ],
+        "app:generate-key": "@php scripts/generate-app-key.php"
     }
 }

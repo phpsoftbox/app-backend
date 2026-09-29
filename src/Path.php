@@ -15,7 +15,7 @@ final class Path extends AbstractPath
 
     public function routesPath(string $path = ''): string
     {
-        return $this->path($this->configPath('routes', $path));
+        return $this->configPath('routes', $path);
     }
 
     public function localPath(string $path = ''): string

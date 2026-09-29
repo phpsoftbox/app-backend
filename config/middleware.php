@@ -13,26 +13,14 @@ use PhpSoftBox\Cookie\CookieMiddleware;
 use PhpSoftBox\Inertia\Middleware\InertiaMiddleware;
 use PhpSoftBox\Inertia\Middleware\InertiaShareMiddleware;
 use PhpSoftBox\Profiler\Middleware\ProfilerMiddleware;
-use PhpSoftBox\Session\CsrfMiddleware;
-use PhpSoftBox\Session\SessionMiddleware;
+use PhpSoftBox\Session\Http\CsrfMiddleware;
+use PhpSoftBox\Session\Http\SessionMiddleware;
 
 return static function (Application $app): void {
     $app->alias('auth', AuthMiddleware::class);
     $app->alias('area.admin', 'area.access.admin');
     $app->alias('csrf', CsrfMiddleware::class);
     $app->alias('profiler', ProfilerMiddleware::class);
-
-    $app->middlewareGroup('web', [
-        CookieMiddleware::class,
-        SessionMiddleware::class,
-        RememberRestoreMiddleware::class,
-        CsrfMiddleware::class,
-    ]);
-
-    $app->middlewareGroup('api', [
-        CorsMiddleware::class,
-        BodyParserMiddleware::class,
-    ]);
 
     // Первым: IP клиента, схема и host от доверенных прокси нужны всем остальным.
     $app->add(TrustedProxyMiddleware::class, 1000);

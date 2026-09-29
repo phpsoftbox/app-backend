@@ -68,7 +68,8 @@ return [
             return new InMemoryProfilerStore();
         }
 
-        $path = $container->get(PathInterface::class)->createPath((string) ($config['storage_path'] ?? 'local/profiler'));
+        $paths = $container->get(PathInterface::class);
+        $path  = $paths->ensureDirectory($paths->createPath((string) ($config['storage_path'] ?? 'local/profiler')));
 
         return new FileProfilerStore($path);
     }),
