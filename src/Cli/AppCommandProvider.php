@@ -18,5 +18,12 @@ final class AppCommandProvider implements CommandProviderInterface
             signature: [],
             handler: HealthHandler::class,
         ));
+
+        $registry->register(Command::define(
+            name: 'container:cache:clear',
+            description: 'Clear compiled DI container',
+            signature: [],
+            handler: ContainerCacheClearHandler::class,
+        ));
     }
 }

@@ -10,11 +10,16 @@ composer create-project phpsoftbox/app-backend my-app
 
 ## Быстрый старт
 
-1) Окружение после `create-project` будет создано автоматически:
+1) Окружение после `create-project` будет создано автоматически — `config/env/.env` из примера со случайным
+   `APP_KEY` (`composer app:generate-key`). Вручную:
 
 ```bash
 cp config/env/.env.example config/env/.env
+composer app:generate-key
 ```
+
+`APP_ENV` — `dev`, `test`, `demo` или `prod` (`production`, `development`, `local`, `testing` приводятся к ним);
+неизвестное значение — ошибка конфигурации.
 
 2) Установи зависимости:
 
@@ -59,6 +64,31 @@ php psb db:migrate:publish --package=phpsoftbox/session
 
 SSR для Inertia выключен по умолчанию. Включайте его явно через `INERTIA_SSR=1`
 и настройку `VITE_SSR_URL`, когда SSR server реально запущен.
+
+Теги dev-сервера Vite выводятся только в окружении `dev` (или при `vite.dev = true` в конфиге); в остальных
+окружениях нужен собранный `public/build/manifest.json` (`yarn build`).
+
+## Продакшен
+
+- `APP_ENV=prod`: DI-контейнер компилируется в `local/cache/di`. При деплое после `composer install` сбросьте его до
+  перезапуска воркеров, иначе останется контейнер от прошлой версии кода:
+
+  ```bash
+  php psb container:cache:clear
+  php psb config:cache:clear   # если включён кеш конфигурации
+  ```
+
+- За балансировщиком задайте `APP_TRUSTED_PROXIES` — иначе IP клиента и схема будут адресом и схемой балансировщика.
+- Необработанные исключения пишутся в `local/logs/app.log` (`App\Runtime\FileLogger`, по строке JSON на запись).
+  Для ротации и каналов замените `LoggerInterface` в `config/definitions/http.php` на полноценный логгер.
+- Долгоживущий процесс (воркер очереди, RoadRunner/Swoole): после каждой задачи или запроса вызывайте
+  `$container->get(ServicesResetter::class)->reset()` — сбрасывает warmup БД, identity map ORM, кеш прав и очередь
+  cookie, состояние Inertia (share, хлебные крошки, meta, вкладки) (`config/definitions/runtime.php`). Для воркера `phpsoftbox/queue` — параметр `resetState` у `Worker`.
+- Эндпоинты профайлера (`PROFILER_ENDPOINT`, по умолчанию `/__profiler/api/traces`) регистрируются только в `dev`
+  при `PROFILER_ENABLED=1`: они отдают трассы запросов без авторизации.
+- Хранилище трасс ограничено: `PROFILER_MAX_TRACES` (500) и `PROFILER_MAX_AGE_SECONDS` (сутки, только file); сбои
+  сохранения трасс пишутся в лог, запрос не падает.
+- Корень local-дисков Storage без своего `rootPath` — `local/storage` (абсолютный путь из `Path`).
 
 ## Проверки
 

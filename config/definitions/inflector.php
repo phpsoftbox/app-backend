@@ -14,7 +14,7 @@ use function PhpSoftBox\Container\factory;
 return [
     InflectorInterface::class => factory(static function (): InflectorInterface {
         $lang     = strtolower((string) env('APP_INFLECTOR_LANG', 'en'));
-        $language = $lang === 'en' ? LanguageEnum::EN : LanguageEnum::EN;
+        $language = LanguageEnum::tryFrom($lang) ?? LanguageEnum::EN;
 
         return InflectorFactory::create($language);
     }),

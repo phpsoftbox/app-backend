@@ -25,15 +25,17 @@ return [
             $driver = $disk['driver'] ?? 'local';
             $root   = $disk['rootPath'] ?? $disk['root'] ?? null;
             if (is_string($root) && $root !== '') {
-                $disk['rootPath'] = $path->createPath($root);
+                $disk['rootPath'] = $path->ensureDirectory($path->createPath($root));
             } elseif (!is_string($driver) || $driver === '' || $driver === 'local') {
-                $disk['rootPath'] = $path->storagePath();
+                $disk['rootPath'] = $path->ensureDirectory($path->storagePath());
             }
 
             $disks[$name] = $disk;
         }
 
         $config['disks'] = $disks;
+        // Корень local-дисков без своего rootPath и диска по умолчанию, если он не описан.
+        $config['rootPath'] ??= $path->ensureDirectory($path->storagePath());
 
         return new Storage($config);
     }),

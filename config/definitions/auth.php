@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Entity\User;
 use PhpSoftBox\Auth\Authorization\ArrayRoleDefinitionProvider;
 use PhpSoftBox\Auth\Authorization\DatabasePermissionChecker;
+use PhpSoftBox\Auth\Authorization\PermissionCacheInterface;
 use PhpSoftBox\Auth\Authorization\PermissionCheckerInterface;
 use PhpSoftBox\Auth\Authorization\RoleDefinitionProviderInterface;
 use PhpSoftBox\Auth\Contracts\UserInterface;
@@ -176,6 +177,9 @@ return [
             roleDefinitions: $container->get(RoleDefinitionProviderInterface::class),
         );
     }),
+
+    // Кеш прав сбрасывается UserRoleManager сразу после изменения ролей.
+    PermissionCacheInterface::class => get(PermissionCheckerInterface::class),
 
     RememberCookieConfig::class => factory(static function (ContainerInterface $container): RememberCookieConfig {
         $config = (array) $container->get(Config::class)->get('auth.remember', []);

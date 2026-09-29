@@ -20,7 +20,7 @@ $builder->addDefinitions(require __DIR__ . '/dependencies.php');
 if (Environment::detect() === Environment::PROD) {
     $path = new Path(dirname(__DIR__));
 
-    $builder->enableCompilation($path->cachePath('di'));
+    $builder->enableCompilation($path->ensureDirectory($path->cachePath('di')));
 }
 
 $container = $builder->build();

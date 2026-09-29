@@ -47,7 +47,8 @@ if ($command !== '') {
     array_shift($argv);
 }
 
-while (($argv[0] ?? null) !== null && is_string($argv[0]) && isScriptToken($argv[0], $script)) {
+// Путь к скрипту иногда "протекает" в аргументы: отбрасываем только полный путь, короткое имя (`psb`) — данные.
+if (($argv[0] ?? null) !== null && is_string($argv[0]) && isScriptToken($argv[0], $script)) {
     array_shift($argv);
 }
 
@@ -64,22 +65,9 @@ try {
 
 function isScriptToken(string $value, string $script): bool
 {
-    $value = normalizeScriptToken($value);
-    if ($value === '') {
-        return false;
-    }
-
     $script = normalizeScriptToken($script);
-    if ($script !== '' && $value === $script) {
-        return true;
-    }
 
-    $scriptBase = basename($script);
-    if ($scriptBase !== '' && $value === $scriptBase) {
-        return true;
-    }
-
-    return $value === basename(__FILE__);
+    return str_contains($script, '/') && normalizeScriptToken($value) === $script;
 }
 
 function normalizeScriptToken(string $value): string

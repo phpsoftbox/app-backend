@@ -20,7 +20,7 @@ final readonly class JsonResponder
      */
     public function success(mixed $data = null, int $status = 200, array $meta = []): JsonResponse
     {
-        return new JsonResponse(ApiResponse::success($data, $meta, $this->serializer)->toArray(), $status);
+        return new JsonResponse(ApiResponse::success($data, $meta, $this->serializer), $status);
     }
 
     /**
@@ -40,6 +40,6 @@ final readonly class JsonResponder
             $meta,
             $code,
             $this->serializer,
-        )->toArray(), $status);
+        ), $status);
     }
 }
