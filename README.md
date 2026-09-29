@@ -86,6 +86,9 @@ SSR для Inertia выключен по умолчанию. Включайте 
   cookie, состояние Inertia (share, хлебные крошки, meta, вкладки) (`config/definitions/runtime.php`). Для воркера `phpsoftbox/queue` — параметр `resetState` у `Worker`.
 - Эндпоинты профайлера (`PROFILER_ENDPOINT`, по умолчанию `/__profiler/api/traces`) регистрируются только в `dev`
   при `PROFILER_ENABLED=1`: они отдают трассы запросов без авторизации.
+- Хранилище трасс ограничено: `PROFILER_MAX_TRACES` (500) и `PROFILER_MAX_AGE_SECONDS` (сутки, только file); сбои
+  сохранения трасс пишутся в лог, запрос не падает.
+- Корень local-дисков Storage без своего `rootPath` — `local/storage` (абсолютный путь из `Path`).
 
 ## Проверки
 

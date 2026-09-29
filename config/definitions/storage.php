@@ -34,6 +34,8 @@ return [
         }
 
         $config['disks'] = $disks;
+        // Корень local-дисков без своего rootPath и диска по умолчанию, если он не описан.
+        $config['rootPath'] ??= $path->ensureDirectory($path->storagePath());
 
         return new Storage($config);
     }),

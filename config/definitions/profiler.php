@@ -22,6 +22,7 @@ use PhpSoftBox\Router\Profiler\RouterProfilerExtension;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Log\LoggerInterface;
 
 use function PhpSoftBox\Container\factory;
 use function PhpSoftBox\Container\get;
@@ -64,14 +65,20 @@ return [
         $config = (array) $container->get(Config::class)->get('profiler', []);
         $driver = (string) ($config['driver'] ?? 'file');
 
+        $maxTraces = (int) ($config['max_traces'] ?? 500);
+
         if ($driver === 'memory') {
-            return new InMemoryProfilerStore();
+            return new InMemoryProfilerStore(maxTraces: $maxTraces);
         }
 
         $paths = $container->get(PathInterface::class);
         $path  = $paths->ensureDirectory($paths->createPath((string) ($config['storage_path'] ?? 'local/profiler')));
 
-        return new FileProfilerStore($path);
+        return new FileProfilerStore(
+            $path,
+            maxTraces: $maxTraces,
+            maxAgeSeconds: (int) ($config['max_age_seconds'] ?? 86400),
+        );
     }),
 
     ProfilerInterface::class => factory(static function (ContainerInterface $container): ProfilerInterface {
@@ -87,7 +94,10 @@ return [
     Profiler::class => get(ProfilerInterface::class),
 
     ProfilerMiddleware::class => factory(static function (ContainerInterface $container): ProfilerMiddleware {
-        return new ProfilerMiddleware($container->get(ProfilerInterface::class));
+        return new ProfilerMiddleware(
+            $container->get(ProfilerInterface::class),
+            $container->get(LoggerInterface::class),
+        );
     }),
 
     ProfilerReportHandler::class => factory(static function (ContainerInterface $container): ProfilerReportHandler {
