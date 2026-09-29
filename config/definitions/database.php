@@ -10,6 +10,7 @@ use PhpSoftBox\Database\Connection\ConnectionManager;
 use PhpSoftBox\Database\Connection\ConnectionManagerInterface;
 use PhpSoftBox\Database\Migrations\MigrationsConfig;
 use PhpSoftBox\Database\Profiler\DatabaseProfilerCollector;
+use PhpSoftBox\Orm\Behavior\ContainerListenerResolver;
 use PhpSoftBox\Orm\ConnectionEntityManagerFactory;
 use PhpSoftBox\Orm\ConnectionEntityManagerRegistry;
 use PhpSoftBox\Orm\Contracts\ConnectionEntityManagerFactoryInterface;
@@ -47,6 +48,8 @@ return [
         static fn (ContainerInterface $container): EntityManagerRegistryInterface => new ConnectionEntityManagerRegistry(
             connections: $container->get(ConnectionManagerInterface::class),
             runtimeRegistry: $container->get(EntityRuntimeRegistryInterface::class),
+            // #[EventListener] сущностей с зависимостями создаются из контейнера.
+            listenerResolver: new ContainerListenerResolver($container),
         ),
     ),
 
@@ -56,6 +59,7 @@ return [
         static fn (ContainerInterface $container): ConnectionEntityManagerFactoryInterface => new ConnectionEntityManagerFactory(
             connections: $container->get(ConnectionManagerInterface::class),
             runtimeRegistry: $container->get(EntityRuntimeRegistryInterface::class),
+            listenerResolver: new ContainerListenerResolver($container),
         ),
     ),
 
